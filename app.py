@@ -28,11 +28,11 @@ def respond():
     print("got text message :", text)
 
     # here we call our super AI
-    # response = get_response(text)
+    response = get_response(text)
 
     # now just send the message back
     # notice how we specify the chat and the msg we reply to
-    bot.sendMessage(chat_id=chat_id, text=text, reply_to_message_id=msg_id)
+    bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
 
     # # the first time you chat with the bot AKA the welcoming message
     # if text == "/start":
