@@ -1,4 +1,5 @@
 # import everything
+import re
 from flask import Flask, request
 import telegram
 from telebot.credentials import bot_token, bot_user_name, URL
@@ -64,7 +65,7 @@ def set_webhook():
 
 @app.route("/")
 def index():
-    return "."
+    return ".hello"
 
 
 if __name__ == "__main__":
