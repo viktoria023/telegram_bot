@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 
 @app.route("/bot", methods=["POST"])
-def respond():
+async def respond():
     # retrieve the message in JSON and then transform it to Telegram object
     update = telegram.Update.de_json(request.get_json(force=True), bot)
 
@@ -32,7 +32,7 @@ def respond():
 
     # now just send the message back
     # notice how we specify the chat and the msg we reply to
-    bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
+    await bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
 
     # # the first time you chat with the bot AKA the welcoming message
     # if text == "/start":
