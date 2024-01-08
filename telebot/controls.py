@@ -25,6 +25,84 @@ def get_response(msg):
         ]
         locations = ["Oxford, UK", "Zurich, Switzerland", "Freiburg, Germany"]
 
-        return "test"
+        for i, url in enumerate(urls):
+            response = requests.get(url)
+            soup = BeautifulSoup(response.content, "html.parser")
+
+            if url.startswith("https://www.wetter.com/"):
+                print("wetter.com")
+                # Extract the current weather information
+                if response.status_code == 200:
+                    # Parse the HTML content with BeautifulSoup
+                    soup = BeautifulSoup(response.content, "html.parser")
+
+                    ## Extract the current weather information
+
+                    # Find the div with the class "info-weather"
+                    info_weather_div = soup.select_one(".info-weather")
+
+                    # Extract temperature
+                    temperature = info_weather_div.select_one(".rtw_temp").text.strip()
+
+                    # Extract weather description
+                    weather_description = info_weather_div.select_one(
+                        ".rtw_weather_txt"
+                    ).text.strip()
+
+                    # extract detailed weather description
+                    weather_element = soup.find(
+                        "div",
+                        class_="[ layout__item desk-one-third portable-one-whole ] [ portable-mb ]",
+                    )
+
+                    # Extract the text content
+                    weather_text = weather_element.get_text(strip=True)
+
+                    # set location
+                    location = locations[i]
+
+                    ## Extract the forecast
+                    # forecast_weather_grid = soup.select_one("[ forecast-navigation-grid ]")
+                    # forecast_weather_grid = soup.find(
+                    #     "div",
+                    #     class_="[ layout__item desk-one-third portable-one-whole ] [ portable-mb ]",
+                    # )
+
+                    # Print the extracted information
+                    print("Current Weather in", location)
+                    print("Temperature:", temperature)
+                    print("Weather Description:", weather_description)
+                    print(weather_text)
+
+                    # Find all anchor tags inside the forecast-navigation-grid div
+                    forecast_days = soup.find(
+                        "div",
+                        class_="[ forecast-navigation-grid ]",
+                    )
+
+                    if forecast_days:
+                        days = forecast_days.find_all("a")
+
+                    for day in days:
+                        div_element = day.select_one("div")
+                        if div_element:
+                            date = div_element.text.strip()
+                            max_temp = day.select_one(
+                                ".forecast-navigation-temperature-max"
+                            ).text.strip("°")
+                            min_temp = day.select_one(
+                                ".forecast-navigation-temperature-min"
+                            ).text.strip("°")
+
+                        print(
+                            f"Date: {date}, Max Temperature: {max_temp}°C, Min Temperature: {min_temp}°C"
+                        )
+
+                else:
+                    print(
+                        f"Failed to retrieve content. Status code: {response.status_code}"
+                    )
+
+        exit()
 
     return "test"
