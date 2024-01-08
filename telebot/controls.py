@@ -30,7 +30,7 @@ def get_response(msg):
             soup = BeautifulSoup(response.content, "html.parser")
 
             if url.startswith("https://www.wetter.com/"):
-                print("wetter.com")
+                # print("wetter.com")
                 # Extract the current weather information
                 if response.status_code == 200:
                     # Parse the HTML content with BeautifulSoup
@@ -69,10 +69,10 @@ def get_response(msg):
                     # )
 
                     # Print the extracted information
-                    print("Current Weather in", location)
-                    print("Temperature:", temperature)
-                    print("Weather Description:", weather_description)
-                    print(weather_text)
+                    # print("Current Weather in", location)
+                    # print("Temperature:", temperature)
+                    # print("Weather Description:", weather_description)
+                    # print(weather_text)
 
                     # Find all anchor tags inside the forecast-navigation-grid div
                     forecast_days = soup.find(
@@ -94,15 +94,24 @@ def get_response(msg):
                                 ".forecast-navigation-temperature-min"
                             ).text.strip("°")
 
-                        print(
-                            f"Date: {date}, Max Temperature: {max_temp}°C, Min Temperature: {min_temp}°C"
-                        )
-
-                else:
-                    print(
-                        f"Failed to retrieve content. Status code: {response.status_code}"
+                        # print(
+                        #    f"Date: {date}, Max Temperature: {max_temp}°C, Min Temperature: {min_temp}°C"
+                        # )
+                    return (
+                        "Current Weather in",
+                        location,
+                        "Temperature:",
+                        temperature,
+                        "Weather Description:",
+                        weather_description,
+                        weather_text,
+                        f"Date: {date}, Max Temperature: {max_temp}°C, Min Temperature: {min_temp}°C",
                     )
 
-        exit()
+                else:
+                    # print(
+                    #    f"Failed to retrieve content. Status code: {response.status_code}"
+                    # )
 
-    return "test"
+                    # return "test"
+                    return "Failed to retrieve content. Status code: {response.status_code}"
