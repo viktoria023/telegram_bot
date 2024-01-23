@@ -101,7 +101,7 @@ def get_response(msg):
                             "Weather Description:",
                             weather_description,
                             weather_text,
-                            f"Date: {date}, Max Temperature: {max_temp}°C, Min Temperature: {min_temp}°C",
+                            f"Date: {date}, Max Temperature: {max_temp}\u00b0 C, Min Temperature: {min_temp}\u00b0C",
                         )
                     )
 
