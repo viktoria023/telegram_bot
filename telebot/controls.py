@@ -94,7 +94,7 @@ def get_response(msg):
                     return tuple(
                         string.encode("latin1").decode("unicode_escape")
                         for string in (
-                            "Current Weather in",
+                            "Location:",
                             location,
                             "Temperature:",
                             temperature,
