@@ -24,6 +24,12 @@ def get_response(msg):
         ]
         locations = ["Oxford, UK", "Zurich, Switzerland", "Freiburg, Germany"]
 
+        assembled_weather_info = {
+            "Oxford, UK": 0,
+            "Zurich, Switzerland": 1,
+            "Freiburg, Germany": 2,
+        }
+
         for i, url in enumerate(urls):
             response = requests.get(url)
             soup = BeautifulSoup(response.content, "html.parser")
@@ -61,17 +67,6 @@ def get_response(msg):
                     location = locations[i]
 
                     ## Extract the forecast
-                    # forecast_weather_grid = soup.select_one("[ forecast-navigation-grid ]")
-                    # forecast_weather_grid = soup.find(
-                    #     "div",
-                    #     class_="[ layout__item desk-one-third portable-one-whole ] [ portable-mb ]",
-                    # )
-
-                    # Print the extracted information
-                    # print("Current Weather in", location)
-                    # print("Temperature:", temperature)
-                    # print("Weather Description:", weather_description)
-                    # print(weather_text)
 
                     # Find all anchor tags inside the forecast-navigation-grid div
                     forecast_days = soup.find(
@@ -96,21 +91,19 @@ def get_response(msg):
                         # print(
                         #    f"Date: {date}, Max Temperature: {max_temp}°C, Min Temperature: {min_temp}°C"
                         # )
-                    return (
-                        "Current Weather in",
-                        location,
-                        "Temperature:",
-                        temperature,
-                        "Weather Description:",
-                        weather_description,
-                        weather_text,
-                        f"Date: {date}, Max Temperature: {max_temp}°C, Min Temperature: {min_temp}°C",
+                    return tuple(
+                        string.encode("latin1").decode("unicode_escape")
+                        for string in (
+                            "Current Weather in",
+                            location,
+                            "Temperature:",
+                            temperature,
+                            "Weather Description:",
+                            weather_description,
+                            weather_text,
+                            f"Date: {date}, Max Temperature: {max_temp}°C, Min Temperature: {min_temp}°C",
+                        )
                     )
 
                 else:
-                    # print(
-                    #    f"Failed to retrieve content. Status code: {response.status_code}"
-                    # )
-
-                    # return "test"
                     return "Failed to retrieve content. Status code: {response.status_code}"
